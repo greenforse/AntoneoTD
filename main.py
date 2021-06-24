@@ -6,7 +6,7 @@ from RoadEnemy import RoadEnemy
 eRoad=RoadEnemy()
 pg.init()
 clock=pg.time.Clock()
-fps=10
+fps=15
 windowSize=(700,700)
 screen = pg.display.set_mode(windowSize)
 Fon=pg.image.load("5COGX.png")

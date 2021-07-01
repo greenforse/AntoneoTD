@@ -8,36 +8,39 @@ class Enemy():
         self.napravlenia=[]
         self.HP=100
         self.step=1
-    def go(self,road):
-        if self.x < road[self.step][0]:
-            if road[self.step][0]-self.x <= self.speed:
-                self.x=road[self.step][0]
-                self.step+=1
-                print("Достигнуто по +х",self.step)
-            else:
-                self.x+=self.speed
-        if self.x > road[self.step][0]:
-            if self.x - road[self.step][0] <= self.speed :
-                self.x=road[self.step][0]
-                self.step+=1
-                print("Достигнуто по -х",self.step)
-            else:
-                self.x-=self.speed
-        if self.y < road[self.step][1]:
-            if road[self.step][1]-self.y <= self.speed:
-                self.y=road[self.step][1]
-                self.step+=1
-                print("Достигнуто по y",self.step)
-            else:
-                self.y+=self.speed
-        if self.y > road[self.step][1]:
-            if self.y - road[self.step][1] <= self.speed :
-                self.y=road[self.step][1]
-                self.step+=1
-                print("Достигнуто по y",self.step)
-            else:
-                self.y-=self.speed
-    
+        self.lastStep = 0
+    def go(self,road,presteep):
+        if presteep - self.lastStep >= 100:
+
+            if self.x < road[self.step][0]:
+                if road[self.step][0]-self.x <= self.speed:
+                    self.x=road[self.step][0]
+                    self.step+=1
+                    print("Достигнуто по +х",self.step)
+                else:
+                    self.x+=self.speed
+            if self.x > road[self.step][0]:
+                if self.x - road[self.step][0] <= self.speed :
+                    self.x=road[self.step][0]
+                    self.step+=1
+                    print("Достигнуто по -х",self.step)
+                else:
+                    self.x-=self.speed
+            if self.y < road[self.step][1]:
+                if road[self.step][1]-self.y <= self.speed:
+                    self.y=road[self.step][1]
+                    self.step+=1
+                    print("Достигнуто по y",self.step)
+                else:
+                    self.y+=self.speed
+            if self.y > road[self.step][1]:
+                if self.y - road[self.step][1] <= self.speed :
+                    self.y=road[self.step][1]
+                    self.step+=1
+                    print("Достигнуто по y",self.step)
+                else:
+                    self.y-=self.speed
+            self.lastStep = presteep
 
         #rstep=False
         ##if self.x >= (road[self.step][0]-(self.speed)) and self.x <= (road[self.step][0]+(self.speed)) and self.y >= (road[self.step][1]-(self.speed)) and self.y <= (road[self.step][1]+(self.speed)) :

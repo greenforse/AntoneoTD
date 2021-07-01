@@ -11,6 +11,6 @@ class Tower (metaclass=ABCMeta):
     def atack(self):
         pass
 
-    @abstractmethod
-    def lvlup(self):
-        pass
+    #@abstractmethod
+    #def lvlup(self):
+    #    pass

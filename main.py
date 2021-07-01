@@ -1,3 +1,4 @@
+from FireTower import FireTower
 from Enemy import Enemy
 import pygame as pg
 from RoadEnemy import RoadEnemy
@@ -14,6 +15,9 @@ Fon_1 = pg.transform.scale(Fon, (700,700))
 RED=(255,0,0)
 run = True
 SamyiStrawniiVrag1=Enemy(eRoad)
+enemys=[]
+enemys.append(SamyiStrawniiVrag1)
+allTowers=[]
 while run:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -21,13 +25,15 @@ while run:
             run=False
         if event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1:
-                pg.draw.circle(screen, RED, event.pos, 10)
+                pg.draw.circle(screen, RED, event.pos, 10)  
                 cel=event.pos
+                NewTower=FireTower(10,1,cel,screen)
+                allTowers.append(NewTower)
                 print(cel)
                 pg.display.update()
     screen.blit((Fon_1),(0,0))
     pg.draw.circle(screen,RED,(SamyiStrawniiVrag1.x,SamyiStrawniiVrag1.y),SamyiStrawniiVrag1.radius)
-    SamyiStrawniiVrag1.go(eRoad.road)
+    SamyiStrawniiVrag1.go(eRoad.road, pg.time.get_ticks())
+    for tower in allTowers:
+        tower.live(enemys,pg.time.get_ticks())
     pg.display.update()
-    clock.tick(fps)
-

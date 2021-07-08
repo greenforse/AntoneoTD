@@ -8,7 +8,7 @@ class Bullet():
         self.sc=sc
         self.damage = damage
         self.oneTime = 0
-        self.deltaTime = 5
+        self.deltaTime = 20
         self.strike = False
         self.enemy = target
     def atack (self,secondTime):
@@ -30,10 +30,17 @@ class Bullet():
                 if self.enemy.y - self.bulletY< self.LimitSpeedBullet:
                     self.bulletY = self.enemy.y
                 else: self.bulletY += self.LimitSpeedBullet
-            if self.bulletY==self.enemy.y and self.bulletX == self.enemy.x and not self.strike:
-                self.enemy.HP-= self.damage
-                self.strike = True
             self.oneTime = secondTime
+        if not self.strike:
+            if self.bulletY >= self.enemy.y-20 and self.bulletY <= self.enemy.y+20:
+                if self.bulletX >= self.enemy.x-20 and self.bulletX <= self.enemy.x +20:
+                    self.enemy.HP-= self.damage
+                    self.strike = True
+        #if self.bulletY<=self.enemy.y-20 and self.bulletX <= self.enemy.x-20 and not self.strike:
+        #    if self.bulletY >= self.enemy.y + 20 and self.bulletX >= self.enemy.x+20:
+        #        self.enemy.HP-= self.damage
+        #        self.strike = True
+        #    
     def bulletWiew(self):
         if not self.strike:
             pg.draw.rect(self.sc,(100,0,30),(self.bulletX,self.bulletY,10,10))

@@ -4,7 +4,7 @@ class Player():
         #self.sc=sc
         self.gold = 50 
         self.livePoints = 20
-
+        self.allTowers=[]
     def buyTower(self,price):
         if self.gold >= price:
             self.gold -= price

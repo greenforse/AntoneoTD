@@ -11,14 +11,14 @@ class FireTower(Tower):
         self.x=mouseCoord[0]
         self.y=mouseCoord[1]
         self.exp=0
-        self.LimitSpeedBullet=1
+        self.LimitSpeedBullet=4
         self.bulletX=self.x
         self.bulletY=self.y
         self.atackRadius=200
         self.timeCooldown = 1500
         self.target=None
         self.oneTime=0
-        self.bullet = Bullet(self.LimitSpeedBullet,self.x,self.y,sc,damage,self.target)
+        #self.bullet = Bullet(self.LimitSpeedBullet,self.x,self.y,sc,damage,self.target)
         self.sc = sc
         self.bullets=[]
     def findEnemy (self,enemys):
@@ -44,7 +44,7 @@ class FireTower(Tower):
                 self.oneTime=secondTime
             if self.target == None:
                 for i in range(len(self.bullets)):
-                    if self.bullets[i].bulletX == self.target.x and self.bullets[i].bulletY == self.target.y:
+                    if self.bullets[i].strike: #bulletX == self.target.x and self.bullets[i].bulletY == self.target.y:
                         del self.bullets[i]
             for bullet in self.bullets:
                 bullet.atack(secondTime)

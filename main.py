@@ -1,10 +1,11 @@
+import ButtonFunction as BF
 from Player import Player
 from FireTower import FireTower
 from Enemy import Enemy
 import pygame as pg
 from RoadEnemy import RoadEnemy
 #from Enemy import Enemy
-
+from Menu import Menu
 eRoad=RoadEnemy()
 pg.init()
 clock=pg.time.Clock()
@@ -13,6 +14,8 @@ screen = pg.display.set_mode(windowSize)
 Fon=pg.image.load("5COGX.png")
 Fon_1 = pg.transform.scale(Fon, (700,700))
 RED=(255,0,0)
+BLUE=(0,0,255)
+GREEN=(0,255,0)
 run = True
 SamyiStrawniiVrag1=Enemy(eRoad,screen)
 enemys=[]
@@ -21,6 +24,12 @@ allTowers=[]
 Anton = Player()
 deltatime = 2000
 onetime=0
+Menus=[]
+buyMenu=Menu(150,250,(255,0,0),screen,Anton)
+buyMenu.addButton("Огн. башня",RED,BF.buyFireTower)
+buyMenu.addButton("Лед. башня",GREEN,BF.buyFireTower)
+buyMenu.addButton("Лаз. башня",BLUE,BF.buyFireTower)
+Menus.append(buyMenu)
 
 while run:
     for event in pg.event.get():
@@ -28,19 +37,15 @@ while run:
             pg.quit()
             run=False
         if event.type == pg.MOUSEBUTTONDOWN:
+            if event.button == 3:
+                coord = event.pos
+                perMenu = eRoad.blockSpawnUnit(coord) # проверяем чтобы мето не было на тропе врагов 
+                if perMenu:
+                    buyMenu.addCoordinate(coord)
             if event.button == 1:
-                pg.draw.circle(screen, RED, event.pos, 10)
                 cel=event.pos
-                per = eRoad.blockSpawnUnit(cel) # проверяем чтобы мето не было на тропе врагов 
-                if per:                         # если не стоит то  стоавим башню
-                    NewTower=FireTower(10,100,cel,screen)
-                    buyTower = Anton.buyTower(NewTower.price) #Проверяем наличие золота у игрока и снимаем его 
-                    if buyTower:
-                        print("-20",Anton.gold)
-                        allTowers.append(NewTower)
-                        print(cel)
-                        pg.display.update()
-                    else: print("Нету денюшек")
+                buyMenu.selectButton(cel)
+    time = pg.time.get_ticks()                #сделал паузу на время открытия меню
     screen.blit((Fon_1),(0,0))
 
     for i in range(len(enemys)-1): # проверка убийства врагов и очистка карты от них 
@@ -53,15 +58,23 @@ while run:
             run = Anton.lossLivePoints() # То Функция возвращает False в run whila
                                                                                                                     
     for enemy in enemys: # действия и отрисовка врагов 
-        enemy.go(eRoad.road,pg.time.get_ticks())
-        enemy.viewEnemy(pg.time.get_ticks())
+        enemy.go(eRoad.road,time)
+        enemy.viewEnemy(time)
 
-    for tower in allTowers: # действия и отрисовка башень
-        tower.live(enemys,pg.time.get_ticks())
+    for tower in Anton.allTowers: # действия и отрисовка башень
+        tower.live(enemys,time)
         
-    if deltatime <= pg.time.get_ticks() - onetime: # Появление врагов каждые deltatime
-        onetime = pg.time.get_ticks()
+    if deltatime <= time - onetime: # Появление врагов каждые deltatime
+        onetime = time
         SamyiStrawniiVrag1=Enemy(eRoad,screen)
         enemys.append(SamyiStrawniiVrag1)
 
+    for menu in Menus: #Показ меню
+        menu.viewMenu()
+
+    fontObj = pg.font.Font('18963.ttf', 20)
+    text = str(Anton.gold)
+    text1=str(Anton.livePoints)
+    textSurfaceObj = fontObj.render((f"Золото: {text} Очки: {text1}") , False, BLUE, GREEN) # Вывод табло очков и золота
+    screen.blit(textSurfaceObj,(250,50))
     pg.display.update()

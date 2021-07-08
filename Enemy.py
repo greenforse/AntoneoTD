@@ -72,7 +72,7 @@ class Enemy():
         if self.swichNapravlenie != self.napravlenie: #сравниваем направление 
             self.frameNumber = 0
 
-        if self.napravlenie==0:
+        if self.napravlenie==8:
             self.sc.blit(self.animation[self.napravlenie][self.frameNumber],(self.x,self.y-wirina//2)) # тут я должен что то нарисовать 
         else:
             pg.draw.circle(self.sc,RED,(self.x,self.y),self.radius)

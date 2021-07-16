@@ -4,10 +4,10 @@ import cmath
 from Bullet import Bullet
 import pygame as pg
 class FireTower(Tower):
-    def __init__ (self,atackSpeed,damage,mouseCoord,sc):
+    def __init__ (self,mouseCoord,sc):
         self.price = 20
-        self.atackSpeed=atackSpeed
-        self.damage=damage
+        self.atackSpeed=10
+        self.damage=100
         self.x=mouseCoord[0]
         self.y=mouseCoord[1]
         self.exp=0
@@ -21,6 +21,8 @@ class FireTower(Tower):
         #self.bullet = Bullet(self.LimitSpeedBullet,self.x,self.y,sc,damage,self.target)
         self.sc = sc
         self.bullets=[]
+        self.wirina=30
+        self.dlina=30
     def findEnemy (self,enemys):
         #rangeTarget = None
         if self.target==None:
@@ -51,12 +53,14 @@ class FireTower(Tower):
                 bullet.bulletWiew()
             if self.target.HP <= 0:
                 self.target = None
-
     
-            
+    def lvlUp(self):
+        self.damage+=100
+        self.timeCooldown -=100
+        
     def live (self,enemys,secondTime):
         self.findEnemy(enemys)
         self.atack(secondTime)
-        pg.draw.rect(self.sc,(255,255,255),(self.x,self.y, 30,30))
+        pg.draw.rect(self.sc,(255,255,255),(self.x,self.y, self.wirina,self.dlina))
         #self.bullet.live()
         

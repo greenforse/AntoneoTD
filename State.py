@@ -5,13 +5,13 @@ class State(metaclass=ABCMeta):
     self.menu = menu
 
   @abstractmethod
-  def startMenu(self,mouseCoord):
+  def init(self,mouseCoord):
     pass
 
   @abstractmethod
-  def gameMenu(self, mouseCoord):
+  def processEvents(self, mouseCoord):
     pass
 
   @abstractmethod
-  def finishMenu (self,mouseCoord):
+  def draw (self,time):
     pass

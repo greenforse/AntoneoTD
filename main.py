@@ -6,8 +6,8 @@ import pygame as pg
 from RoadEnemy import RoadEnemy
 #from Enemy import Enemy
 from Menu import Menu
-eRoad=RoadEnemy()
 pg.init()
+eRoad=RoadEnemy()
 clock=pg.time.Clock()
 windowSize=(700,700)
 screen = pg.display.set_mode(windowSize)
@@ -35,44 +35,6 @@ enemyHp=500
 lvlUpMenu = Menu(150,30,(255,0,0),screen,Anton)
 lvlUpMenu.addButton("Левел АП 30з",BLUE,BF.lvlUp)
 Menus.append(lvlUpMenu)
-
-def goGame(enemyHp,onetime):
-
-    time = pg.time.get_ticks()                
-    screen.blit((Fon_1),(0,0))
-
-    for i in range(len(enemys)-1): # проверка убийства врагов и очистка карты от них 
-        if enemys[i].HP <= 0:
-            del enemys[i]
-            Anton.gold += 5        # Получение золота игроком за убийство врага
-            print(Anton.gold,"+5")
-        if enemys[i].x == eRoad.road[len(eRoad.road)-2][0] and enemys[i].y == eRoad.road[len(eRoad.road)-2][1] : #Проверяем врагов на конечной точке
-            del enemys[i]                  # Удаляем и отнимаем очки,Если очки закончились
-            run = Anton.lossLivePoints() # То Функция возвращает False в run whila
-                                                                                                                    
-    for enemy in enemys: # действия и отрисовка врагов 
-        enemy.go(eRoad.road,time)
-        enemy.viewEnemy(time)
-
-    for tower in Anton.allTowers: # действия и отрисовка башень
-        tower.live(enemys,time)
-        
-    if deltatime <= time - onetime: # Появление врагов каждые deltatime
-        onetime = time
-        SamyiStrawniiVrag1=Enemy(eRoad,screen,enemyHp)
-        enemys.append(SamyiStrawniiVrag1)
-        enemyHp += 25
-
-    for menu in Menus: #Показ меню
-        menu.viewMenu()
-
-    fontObj = pg.font.Font('18963.ttf', 20)
-    text = str(Anton.gold)
-    text1=str(Anton.livePoints)
-    textSurfaceObj = fontObj.render((f"Золото: {text} Очки: {text1}") , False, BLUE, GREEN) # Вывод табло очков и золота
-    screen.blit(textSurfaceObj,(250,50))
-    pg.display.update()
-
 
 while run:
     for event in pg.event.get():

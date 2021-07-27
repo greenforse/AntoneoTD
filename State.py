@@ -1,17 +1,15 @@
 from abc import ABCMeta, abstractmethod
 
 class State(metaclass=ABCMeta):
-  def __init__(self, menu):
-    self.menu = menu
-
+  #def __init__(self, menu):
   @abstractmethod
-  def init(self,mouseCoord):
+  def init(self):
     pass
 
   @abstractmethod
-  def processEvents(self, mouseCoord):
+  def processEvents(self):
     pass
 
   @abstractmethod
-  def draw (self,time):
+  def draw (self):
     pass

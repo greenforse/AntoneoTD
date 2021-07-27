@@ -36,3 +36,9 @@ def lvlUp(player,cel,sc):
             if cel[1] <= tower.y + tower.dlina//2 and cel[1] >= tower.y-tower.dlina//2:
                 player.lvlUp(tower)
                 print("левел up")
+
+def play(player,cel,sc):
+    player.readyPlay()
+
+def quit(player,cel,sc):
+    pass

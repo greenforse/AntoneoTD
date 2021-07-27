@@ -4,27 +4,29 @@ import pygame as pg
 from Player import Player
 import GameSetup as GS
 import ButtonFunction as BF
+from Enemy import Enemy
+from StartMenuState import StartMenuState
 
 class Game():
 
-    def _init_(self):
-        self.eRoad=RoadEnemy()
-        self.clock=pg.time.Clock()
+    def __init__(self):
+        
         self.windowSize=(700,700)
         self.screen = pg.display.set_mode(self.windowSize)
+        self.run = True
+        #self.SamyiStrawniiVrag1=Enemy(eRoad,screen)
+        self.Anton = Player()
+        self.state = StartMenuState(self)
+        self.state.init()
+
+    def gameInit(self):
+        self.eRoad=RoadEnemy()
         self.Fon=pg.image.load("5COGX.png")
         self.Fon_1 = pg.transform.scale(self.Fon, (700,700))
-        self.RED=(255,0,0)
-        self.BLUE=(0,0,255)
-        self.GREEN=(0,255,0)
-        self.run = True
-        #self.#SamyiStrawniiVrag1=Enemy(eRoad,screen)
-        self.enemys=[]
-        #self.#enemys.append(SamyiStrawniiVrag1)
-        self.allTowers=[]
-        self.Anton = Player()
         self.deltatime = 2000
         self.onetime=0
+        self.enemys=[]
+        self.allTowers=[]
         self.Menus=[]
         self.buyMenu=Menu(150,150,(255,0,0),self.screen,self.Anton)
         self.buyMenu.addButton("Огн. башня",GS.RED,BF.buyFireTower)
@@ -35,13 +37,8 @@ class Game():
         self.lvlUpMenu = Menu(150,30,(255,0,0),self.screen,self.Anton)
         self.lvlUpMenu.addButton("Левел АП 30з",GS.BLUE,BF.lvlUp)
         self.Menus.append(self.lvlUpMenu)
-        self.startMenu=Menu(700,700,(255,0,0),self.screen,self.Anton)
-        self.startMenu.addButton("Начать",GS.BLUE,BF.lvlUp)
-        self.startMenu.addButton("Выйти",GS.BLUE,BF.lvlUp)
-        self.state = None# Потом добавить статус
-        self.play = True
 
-    def drawGame(self,time):
+    def drawGame(self,time): #Надо разбить на методы 
         self.screen.blit((self.Fon_1),(0,0))
 
         for i in range(len(self.enemys)-1): # проверка убийства врагов и очистка карты от них 
@@ -60,9 +57,9 @@ class Game():
         for tower in self.Anton.allTowers: # действия и отрисовка башень
             tower.live(self.enemys,time)
 
-        if self.deltatime <= time - self.onetime: # Появление врагов каждые deltatime
+        if self.deltatime <= time - self.onetime: # Появление врагов каждые deltatime(#нужно выделить отдельный метод)
             self.onetime = time
-            SamyiStrawniiVrag1=self.Enemy(self.eRoad,self.screen,self.enemyHp)
+            SamyiStrawniiVrag1=Enemy(self.eRoad,self.screen,self.enemyHp)
             self.enemys.append(SamyiStrawniiVrag1)
             self.enemyHp += 25
 
@@ -71,23 +68,15 @@ class Game():
         self.viewScore()
         pg.display.update()
 
-    def draw(self,time):
-        self.state.draw(time)
+    def closeAllGameMenu(self):
+        for menu in self.Menus:
+            menu.inter = False
+            
+    def drawStartMenu(self):
+        self.startMenu.viewMenu()
+        pg.display.update()
 
-    #def inputMouseButton(self,coord,button):
-    #    if button == 1:
-    #        self.buyMenu.selectButton(coord)
-    #        if self.Anton.hitTower(coord):
-    #            print("Папали по башне")
-    #            self.lvlUpMenu.addCoordinate(coord)
-    #        else: self.lvlUpMenu.selectButton(coord)
-    #    if button == 3:
-    #        perMenu = self.eRoad.blockSpawnUnit(coord) # проверяем чтобы мето не было на тропе врагов
-    #        hitTower1 = self.Anton.hitTower(coord)  # Проверяем что мы не ставим башню на башню 
-    #        if perMenu and not hitTower1: 
-    #            self.buyMenu.addCoordinate(coord)
-
-    def processEvents(self):
+    def checkHotKey(self): #метод обработки нажатий для подставления в другие методы 
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -95,27 +84,56 @@ class Game():
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 3:
                     coord = event.pos
-                    perMenu = self.eRoad.blockSpawnUnit(coord) # проверяем чтобы мето не было на тропе врагов
-                    hitTower1 = self.Anton.hitTower(coord)  # Проверяем что мы не ставим башню на башню 
-                    if perMenu and not hitTower1: 
-                        self.buyMenu.addCoordinate(coord)
+                    button=3
                 if event.button == 1:
-                    cel=event.pos
-                    self.buyMenu.selectButton(cel)
-                    if self.Anton.hitTower(cel):
-                        print("Папали по башне")
-                        self.lvlUpMenu.addCoordinate(cel)
-                    else: self.lvlUpMenu.selectButton(cel)
+                    coord=event.pos
+                    button = 1
+                return [coord,button]
 
-    def DrawStartMenu(self):
+    def inputMouseButtonInGame(self):
+        input = self.checkHotKey()
+        if input[1] == 1: #input[1] это нажатая кнопка input[0] это координата
+            self.buyMenu.selectButton(input[0])
+            if self.Anton.hitTower(input[0]):
+                print("Папали по башне")
+                self.lvlUpMenu.addCoordinate(input[0])
+            else: self.lvlUpMenu.selectButton(input[0])
+        if input[1] == 3:
+            perMenu = self.eRoad.blockSpawnUnit(input[0]) # проверяем чтобы мето не было на тропе врагов
+            hitTower1 = self.Anton.hitTower(input[0])  # Проверяем что мы не ставим башню на башню 
+            if perMenu and not hitTower1: 
+                self.buyMenu.addCoordinate(input[0])
+
+    def inputMouseButtonInStartMenu(self):
+        input = self.checkHotKey()
+        if input[1] == 1:
+            self.startMenu.selectButton(input[0])
+
+    def buildStartMenu(self):
+        self.startMenu=Menu(700,700,(255,0,0),self.screen,self.Anton)
+        self.startMenu.addButton("Начать",GS.BLUE,BF.play) # сделаю(л) кнопку начала игры и всех кнопок стартового меню из методов игрока
+        self.startMenu.addButton("Выйти",GS.BLUE,BF.quit)
+
+    def initAndStoStartMenu(self):
         self.startMenu.addCoordinate((0,0)) #вводим начальные координаты чтоб открыть меню
-        self.startMenu.viewMenu()
 
-    def vievPauseMenu(self):
+
+    def draw(self,time):
+        self.state.draw(time)
+
+    def processEvents(self):
+        self.state.processEvents()
+
+    def changeState(self,newState):
+        self.state = newState(self)
+        self.state.init()
+
+    def viewPauseMenu(self):
         pass
 
     def quit(self):
         pass
+
     def getRun(self):
         return self.run
         

@@ -14,7 +14,7 @@ class Menu():
         self.inter = False
         self.player = player
 
-    def addCoordinate(self,coord): 
+    def addCoordinate(self,coord):
         if not self.inter: # первое нажатие кнопки вывода меню 
             self.x=coord[0] # забиваем координаты
             self.y=coord[1]

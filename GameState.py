@@ -13,5 +13,5 @@ class GameState(State):
             self.game.closeAllGameMenu()
             self.game.changeState(FinishMenuState)
 
-    def draw(self):
-        self.game.drawGame()
+    def draw(self,time):
+        self.game.drawGame(time)

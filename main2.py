@@ -4,6 +4,7 @@ from Game import Game
 tDGame=Game()
 pg.init()
 while tDGame.run:
+    time=pg.time.get_ticks()
     tDGame.processEvents()
-    tDGame.draw(pg.time.get_ticks())
+    tDGame.draw(time)
     

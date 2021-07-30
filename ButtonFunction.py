@@ -2,6 +2,8 @@
 from FireTower import FireTower
 from IceTower import IceTower
 from LazerTower import LazerTower
+
+
 def buyFireTower(player,cel,screen):
     newTower = FireTower (cel,screen)
     buyTower = player.buyTower(newTower.price) #Проверяем наличие золота у игрока и снимаем его 

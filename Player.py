@@ -21,8 +21,8 @@ class Player():
     def lossLivePoints(self): #Трата очков при прохождении врагов конечной точки и возвращение 
         if self.livePoints > 0:# False очки если закончились(проигрыш)
             self.livePoints -= 1
-            return True
-        else: False
+            self.play = True
+        else: self.play = False
 
     def hitTower(self,coord):
         hit=False

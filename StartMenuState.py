@@ -7,15 +7,15 @@ class StartMenuState(State):
     
     def init(self):
         self.game.buildStartMenu()
-        self.game.initStopStartMenu()
+        self.game.initAndStopStartMenu()
 
     def processEvents(self):
-        self.game.inputMouseButtonStartMenu()
+        self.game.inputMouseButtonInBigMenu()
         if self.game.Anton.play:
-            self.game.initStopStartMenu()
+            self.game.initAndStopStartMenu()
             self.game.changeState(GameState)
             
-    def draw(self):
-        self.game.drawStartMenu()
+    def draw(self,time):
+        self.game.drawStartMenu(time)
 
 

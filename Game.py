@@ -1,3 +1,4 @@
+
 from Menu import Menu
 from RoadEnemy import RoadEnemy
 import pygame as pg
@@ -6,7 +7,6 @@ import GameSetup as GS
 import ButtonFunction as BF
 from Enemy import Enemy
 from StartMenuState import StartMenuState
-
 class Game():
 
     def __init__(self):
@@ -14,7 +14,6 @@ class Game():
         self.windowSize=(700,700)
         self.screen = pg.display.set_mode(self.windowSize)
         self.run = True
-        #self.SamyiStrawniiVrag1=Enemy(eRoad,screen)
         self.Anton = Player()
         self.state = StartMenuState(self)
         self.state.init()
@@ -134,16 +133,15 @@ class Game():
 
     def buildFinishMenu(self):
         self.finishMenu=Menu(700,700,(255,0,0),self.screen, self.Anton)
-        self.finishMenu.addButton("Повторить",GS.BLUE,BF.play)
-        self.startMenu.addButton("Выйти",GS.BLUE,BF.quit)
+        self.finishMenu.addButton("                   Повторить",GS.BLUE,BF.play)
+        self.finishMenu.addButton("                    Выйти",GS.BLUE,BF.quit)
     
     def initAndStopStartMenu(self):
         self.startMenu.addCoordinate((0,0)) #вводим начальные координаты чтоб открыть меню
 
     def initAndStopFinishMenu(self):
         self.finishMenu.addCoordinate((0,0))
-        self.finishMenu.inter=True
-
+        print("инициализация меню")
     def draw(self,time):
         self.state.draw(time)
 

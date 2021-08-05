@@ -10,7 +10,6 @@ class FinishMenuState(State):
         self.game.initAndStopFinishMenu()
 
     def processEvents(self):
-        self.game.finishMenu.inter=True
         self.game.inputMouseButtonInBigMenu()
         if self.game.Anton.play:
             self.game.initAndStopFinishMenu()

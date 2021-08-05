@@ -3,7 +3,7 @@ class Player():
     def __init__(self):
         #self.sc=sc
         self.gold = 50 
-        self.livePoints = 20
+        self.livePoints = 1
         self.allTowers=[]
         self.play=False
 

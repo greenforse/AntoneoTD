@@ -19,22 +19,17 @@ class Menu():
             self.x=coord[0] # забиваем координаты
             self.y=coord[1]
             self.inter = True # Флажок открытия меню
+            print("Труе через адд координат")
             self.restructButtons()
         else:
             self.inter = False # второе нажатие, убираем флажок, закрывается меню
+            print("Фалсе через аддкоординат")
 
 
     def selectButton(self,coord):
+        print("Начали выбирать кнопку",self.inter)
         if self.inter:
-            if coord[0] >= self.x and coord[0] <= self.x + self.wirina: #Проверяем попадаем ли мы в поле меню по х
-                if coord[1] >=self.y and coord[1] <= self.y + self.dlina:# по y
-                    print("Попали по меню")
-                    for button in self.buttons:                       # проходимся по всем кнопкам, определяем на какую нажали
-                        if coord[0] >= button.x and coord[0] <= button.x + button.wirina:
-                            if coord[1] >= button.y and coord[1] <= button.y+button.dlina :
-                                print("Попали по кнопочке")
-                                button.operation(self.x,self.y)
-                                self.inter = False
+            self.selectButtonInMenu(coord)
 
     def viewMenu(self):
         if self.inter: # если меню открыто то показываем его 
@@ -42,8 +37,8 @@ class Menu():
             for button in self.buttons:
                 button.viewButton()
 
-    def addButton(self,txt,color,function):
-        button=Button(self.wirina,self.deltabuttonY,self.x,self.y+self.deltabuttonY,color,function, self.sc,txt,self.player)
+    def addButton(self,txt,color,function,sizeTxt):
+        button=Button(self.wirina,self.deltabuttonY,self.x,self.y+self.deltabuttonY,color,function, self.sc,txt,self.player,sizeTxt)
         self.buttons.append(button)
         self.deltabuttonY = self.dlina//len(self.buttons)
         for button in self.buttons:
@@ -56,5 +51,18 @@ class Menu():
         for i in range (len(self.buttons)):
             self.buttons[i].y = self.y + (self.deltabuttonY * (i))
             self.buttons[i].x = self . x
-            
-            
+
+    def interFalse(self):
+        self.inter=False
+
+    def selectButtonInMenu(self,coord):
+        if coord[0] >= self.x and coord[0] <= self.x + self.wirina: #Проверяем попадаем ли мы в поле меню по х
+                if coord[1] >=self.y and coord[1] <= self.y + self.dlina:# по y
+                    print("Попали по меню")
+                    for button in self.buttons:                       # проходимся по всем кнопкам, определяем на какую нажали
+                        if coord[0] >= button.x and coord[0] <= button.x + button.wirina:
+                            if coord[1] >= button.y and coord[1] <= button.y+button.dlina :
+                                print("Попали по кнопочке")
+                                button.operation(self.x,self.y)
+                                self.inter = False
+                                print("фалсе через выбор кнопки")

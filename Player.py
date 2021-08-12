@@ -2,8 +2,10 @@
 class Player():
     def __init__(self):
         #self.sc=sc
-        self.gold = 50 
-        self.livePoints = 1
+        self.startGold = 50
+        self.gold = self.startGold 
+        self.maxLivePoints = 1
+        self.livePoints = self.maxLivePoints
         self.allTowers=[]
         self.play=False
 
@@ -36,4 +38,9 @@ class Player():
         self.play=True
 
     def notReadyPlay(self):
-        self.play=False    
+        self.play=False
+
+    def refresh(self):
+        self.livePoints=self.maxLivePoints
+        self.gold=self.startGold
+        self.allTowers=[]

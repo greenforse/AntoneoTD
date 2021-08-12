@@ -27,18 +27,19 @@ class Game():
         self.enemys=[]
         self.allTowers=[]
         self.Menus=[]
-        self.buyMenu=Menu(150,150,(255,0,0),self.screen,self.Anton)
-        self.buyMenu.addButton("Огн. башня",GS.RED,BF.buyFireTower)
-        self.buyMenu.addButton("Лед. башня",GS.BLUE,BF.buyIceTower)
-        self.buyMenu.addButton("Лаз. башня",GS.GREEN,BF.buyLazerTower)
+        self.buyMenu=Menu(200,200,(255,0,0),self.screen,self.Anton)
+        self.buyMenu.addButton("Огн. башня: 20з.",GS.RED,BF.buyFireTower,24)
+        self.buyMenu.addButton("Лед. башня: 20з.",GS.BLUE,BF.buyIceTower,24)
+        self.buyMenu.addButton("Лаз. башня: 20з.",GS.GREEN,BF.buyLazerTower,24)
         self.Menus.append(self.buyMenu)
         self.enemyHp=500
         self.lvlUpMenu = Menu(150,30,(255,0,0),self.screen,self.Anton)
-        self.lvlUpMenu.addButton("Левел АП 30з",GS.BLUE,BF.lvlUp)
+        self.lvlUpMenu.addButton("Левел АП 30з",GS.BLUE,BF.lvlUp,24)
         self.Menus.append(self.lvlUpMenu)
-        self.Anton.allTowers=[]
-        self.Anton.gold = 50 
-        self.Anton.livePoints = 20
+        self.Anton.refresh()
+        self.fontObj = pg.font.Font('18963.ttf', 20)
+        #self.Anton.gold = 50 #сделать метод
+        #self.Anton.livePoints = 20#сделать метод
 
     def drawGame(self,time): #Надо разбить на методы 
         self.screen.blit((self.Fon_1),(0,0))
@@ -72,7 +73,7 @@ class Game():
 
     def closeAllGameMenu(self):
         for menu in self.Menus:
-            menu.inter = False
+            menu.interFalse()
             
     def drawStartMenu(self,time):
         self.startMenu.viewMenu()
@@ -119,7 +120,7 @@ class Game():
         if self.press:
             if input[2]:
                 if input[1] == 1:
-                    self.startMenu.selectButton(input[0])
+                    self.startMenu.selectButtonInMenu(input[0])
 
     #def delAllUnit(self):
     #    self.enemys=[]
@@ -128,20 +129,21 @@ class Game():
 
     def buildStartMenu(self):
         self.startMenu=Menu(700,700,(255,0,0),self.screen,self.Anton)
-        self.startMenu.addButton("                   Начать",GS.BLUE,BF.play) # сделаю(л) кнопку начала игры и всех кнопок стартового меню из методов игрока
-        self.startMenu.addButton("                   Выйти",GS.BLUE,BF.quit)
+        self.startMenu.addButton("                       Начать",(138,0,0),BF.play,38) # сделаю(л) кнопку начала игры и всех кнопок стартового меню из методов игрока
+        self.startMenu.addButton("                       Выйти",GS.BLUE,BF.quit,38)
 
     def buildFinishMenu(self):
         self.finishMenu=Menu(700,700,(255,0,0),self.screen, self.Anton)
-        self.finishMenu.addButton("                   Повторить",GS.BLUE,BF.play)
-        self.finishMenu.addButton("                    Выйти",GS.BLUE,BF.quit)
+        self.finishMenu.addButton("                    Повторить",(0,139,139),BF.play,50)
+        self.finishMenu.addButton("                    Выйти",GS.BLUE,BF.quit,50)
     
     def initAndStopStartMenu(self):
         self.startMenu.addCoordinate((0,0)) #вводим начальные координаты чтоб открыть меню
 
     def initAndStopFinishMenu(self):
         self.finishMenu.addCoordinate((0,0))
-        print("инициализация меню")
+        print("инициализация меню",self.finishMenu.inter)
+        pg.display.update()
     def draw(self,time):
         self.state.draw(time)
 
@@ -162,8 +164,7 @@ class Game():
         return self.run
         
     def viewScore(self):
-        fontObj = pg.font.Font('18963.ttf', 20)
         text = str(self.Anton.gold)
         text1=str(self.Anton.livePoints)
-        textSurfaceObj = fontObj.render((f"Золото: {text} Очки: {text1}") , False, GS.BLUE, GS.GREEN) # Вывод табло очков и золота
+        textSurfaceObj = self.fontObj.render((f"Золото: {text} Очки: {text1}") , False, GS.BLUE, GS.GREEN) # Вывод табло очков и золота
         self.screen.blit(textSurfaceObj,(250,50))

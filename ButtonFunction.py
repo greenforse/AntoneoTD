@@ -2,8 +2,8 @@
 from FireTower import FireTower
 from IceTower import IceTower
 from LazerTower import LazerTower
-
-
+import pygame as pg
+import sys
 def buyFireTower(player,cel,screen):
     newTower = FireTower (cel,screen)
     buyTower = player.buyTower(newTower.price) #Проверяем наличие золота у игрока и снимаем его 
@@ -43,4 +43,5 @@ def play(player,cel,sc):
     player.readyPlay()
 
 def quit(player,cel,sc):
-    pass
+    pg.quit()
+    sys.exit()

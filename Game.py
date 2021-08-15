@@ -65,7 +65,7 @@ class Game():
             SamyiStrawniiVrag1=Enemy(self.eRoad,self.screen,self.enemyHp)
             self.enemys.append(SamyiStrawniiVrag1)
             self.enemyHp += 25
-
+        pg.draw.rect(self.screen,(138,0,0),(500,280, 200,70))
         for menu in self.Menus: #Показ меню
             menu.viewMenu()
         self.viewScore()

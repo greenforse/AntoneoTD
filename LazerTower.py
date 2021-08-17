@@ -34,7 +34,7 @@ class LazerTower(Tower):
                 self.target = None
     
     def lvlUp(self):
-        self.damage+=5
+        self.damage+=10
         self.lvl+=1
 
     def live(self,enemys,secondTime):

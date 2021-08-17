@@ -4,7 +4,7 @@ class Player():
         #self.sc=sc
         self.startGold = 50
         self.gold = self.startGold 
-        self.maxLivePoints = 1
+        self.maxLivePoints = 20
         self.livePoints = self.maxLivePoints
         self.allTowers=[]
         self.play=False

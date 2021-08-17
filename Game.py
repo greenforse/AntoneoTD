@@ -34,26 +34,34 @@ class Game():
         self.Menus.append(self.buyMenu)
         self.enemyHp=500
         self.lvlUpMenu = Menu(150,30,(255,0,0),self.screen,self.Anton)
-        self.lvlUpMenu.addButton("Левел АП 30з",GS.BLUE,BF.lvlUp,24)
+        self.lvlUpMenu.addButton("Левел АП 20з",GS.BLUE,BF.lvlUp,24)
         self.Menus.append(self.lvlUpMenu)
         self.Anton.refresh()
         self.fontObj = pg.font.Font('18963.ttf', 20)
         self.wave = 1
+        self.countEnemy=0
+        self.enemyToChangeWave=20
+        self.oneTimeWavePause=0
+        self.pauseDeltaTime=10000
+        self.pause = False
+        self.bustHPEnemy = 25
         #self.Anton.gold = 50 #сделать метод
         #self.Anton.livePoints = 20#сделать метод
 
     def drawGame(self,time): #Надо разбить на методы 
         self.screen.blit((self.Fon_1),(0,0))
-
-        for i in range(len(self.enemys)-1): # проверка убийства врагов и очистка карты от них 
-            if self.enemys[i].HP <= 0:
-                del self.enemys[i]
-                self.Anton.gold += 5        # Получение золота игроком за убийство врага
-                print(self.Anton.gold,"+5")
-            if self.enemys[i].x == self.eRoad.road[len(self.eRoad.road)-2][0] and self.enemys[i].y == self.eRoad.road[len(self.eRoad.road)-2][1] : #Проверяем врагов на конечной точке
-                del self.enemys[i]                  # Удаляем и отнимаем очки,Если очки закончились
-                self.Anton.lossLivePoints() # То Функция возвращает False в run whila
-
+        
+        if len(self.enemys)>0:
+            for i in range(len(self.enemys)):
+                #print(i,) # проверка убийства врагов и очистка карты от них !!!!(было лен-1)
+                if self.enemys[i-1].HP <= 0:
+                    del self.enemys[i-1]
+                    self.Anton.gold += 5        # Получение золота игроком за убийство врага
+                    print(self.Anton.gold,"+5")
+            for i in range(len(self.enemys)):
+                if self.enemys[i-1].x == self.eRoad.road[len(self.eRoad.road)-2][0] and self.enemys[i-1].y == self.eRoad.road[len(self.eRoad.road)-2][1] : #Проверяем врагов на конечной точке
+                    del self.enemys[i-1]                  # Удаляем и отнимаем очки,Если очки закончились
+                    self.Anton.lossLivePoints() # То Функция возвращает False в run whila
         for enemy in self.enemys: # действия и отрисовка врагов 
             enemy.go(self.eRoad.road,time)
             enemy.viewEnemy(time)
@@ -61,16 +69,45 @@ class Game():
         for tower in self.Anton.allTowers: # действия и отрисовка башень
             tower.live(self.enemys,time)
 
-        if self.deltatime <= time - self.onetime: # Появление врагов каждые deltatime(#нужно выделить отдельный метод)
-            self.onetime = time
-            SamyiStrawniiVrag1=Enemy(self.eRoad,self.screen,self.enemyHp)
-            self.enemys.append(SamyiStrawniiVrag1)
-            self.enemyHp += 25
+        self.spawnEnemy(time)
+        #if self.deltatime <= time - self.onetime: # Появление врагов каждые deltatime(#нужно выделить отдельный метод)
+        #    self.onetime = time
+        #    SamyiStrawniiVrag1=Enemy(self.eRoad,self.screen,self.enemyHp)
+        #    self.enemys.append(SamyiStrawniiVrag1)
+        #    self.enemyHp += 25
         pg.draw.rect(self.screen,(138,0,0),(500,280, 200,70))
         for menu in self.Menus: #Показ меню
             menu.viewMenu()
         self.viewScore()
         pg.display.update()
+
+    def spawnEnemy(self,time):
+        if not self.pause:
+            if self.deltatime <= time - self.onetime and self.countEnemy <= self.enemyToChangeWave: # Появление врагов каждые deltatime(#нужно выделить отдельный метод)
+                self.onetime = time
+                SamyiStrawniiVrag1=Enemy(self.eRoad,self.screen,self.enemyHp)
+                self.enemys.append(SamyiStrawniiVrag1)
+                self.enemyHp += self.bustHPEnemy
+                self.countEnemy+=1
+        if self.countEnemy >=self.enemyToChangeWave and len(self.enemys) == 0:
+            self.changeWave(time)
+        self.checkWavePause(time)
+    def changeWave(self,time):
+        self.countEnemy=0
+        self.wave += 1
+        self.deltatime -= 400
+        self.bustHPEnemy += 10
+        self.enemyToChangeWave+=20
+        self.wavePause=True
+        self.oneTimeWavePause=time
+        self.pause = True
+
+    def checkWavePause(self,time):
+        if self.pauseDeltaTime <= time - self.oneTimeWavePause:
+            self.pause=False
+
+
+
 
     def closeAllGameMenu(self):
         for menu in self.Menus:

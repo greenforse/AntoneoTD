@@ -16,6 +16,7 @@ class LazerTower(Tower):
         self.picture = pg.image.load("LazerTow.png")
         self.picture.set_colorkey((255,255,255))
         self.picture=pg.transform.scale(self.picture,(self.dlina,self.wirina))
+        self.lvl=0
         #self.lazer=False
         #self.lazerTime=0
     def atack(self,secondTime):
@@ -34,9 +35,15 @@ class LazerTower(Tower):
     
     def lvlUp(self):
         self.damage+=5
+        self.lvl+=1
 
     def live(self,enemys,secondTime):
         self.findEnemy(enemys)
         self.sc.blit(self.picture,(self.x-self.dlina//2,self.y-self.wirina//2))
+        self.viewLvlup()
         #pg.draw.rect(self.sc,(0,255,0),(self.x-self.wirina//2,self.y-self.dlina//2, self.wirina,self.dlina))
-        self.atack(secondTime)
+        self.atack(secondTime) 
+    
+    def viewLvlup(self):
+        if self.lvl >= 1:
+            pg.draw.rect(self.sc,(255,0,0),(self.x+self.wirina//2,(self.y+self.dlina//2)-(5*self.lvl), 5,5))

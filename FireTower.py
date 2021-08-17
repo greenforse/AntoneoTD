@@ -23,6 +23,7 @@ class FireTower(Tower):
         self.bullets=[]
         self.wirina=30
         self.dlina=30
+        self.lvl=0
     def findEnemy (self,enemys):
         #rangeTarget = None
         if self.target==None:
@@ -62,5 +63,9 @@ class FireTower(Tower):
         self.findEnemy(enemys)
         self.atack(secondTime)
         pg.draw.rect(self.sc,(255,255,255),(self.x,self.y, self.wirina,self.dlina))
+        self.viewLvlup()
         #self.bullet.live()
-        
+    
+    def viewLvlup(self):
+        if self.lvl >= 1:
+            pg.draw.rect(self.sc,(255,0,0),(self.x+self.wirina,(self.y+self.dlina)-(5*self.lvl), 5,5))

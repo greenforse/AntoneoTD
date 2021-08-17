@@ -38,6 +38,7 @@ class Game():
         self.Menus.append(self.lvlUpMenu)
         self.Anton.refresh()
         self.fontObj = pg.font.Font('18963.ttf', 20)
+        self.wave = 1
         #self.Anton.gold = 50 #сделать метод
         #self.Anton.livePoints = 20#сделать метод
 
@@ -166,5 +167,6 @@ class Game():
     def viewScore(self):
         text = str(self.Anton.gold)
         text1=str(self.Anton.livePoints)
-        textSurfaceObj = self.fontObj.render((f"Золото: {text} Очки: {text1}") , False, GS.BLUE, GS.GREEN) # Вывод табло очков и золота
+        text2=str(self.wave)
+        textSurfaceObj = self.fontObj.render((f"Золото: {text} Очки: {text1} Волна:{text2}") , False, GS.BLUE, GS.GREEN) # Вывод табло очков и золота
         self.screen.blit(textSurfaceObj,(250,50))

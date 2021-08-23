@@ -61,7 +61,8 @@ class Game():
             for i in range(len(self.enemys)):
                 if self.enemys[i-1].x == self.eRoad.road[len(self.eRoad.road)-2][0] and self.enemys[i-1].y == self.eRoad.road[len(self.eRoad.road)-2][1] : #Проверяем врагов на конечной точке
                     del self.enemys[i-1]                  # Удаляем и отнимаем очки,Если очки закончились
-                    self.Anton.lossLivePoints() # То Функция возвращает False в run whila
+                    self.Anton.lossLivePoints()
+                    return # То Функция возвращает False в run whila
         for enemy in self.enemys: # действия и отрисовка врагов 
             enemy.go(self.eRoad.road,time)
             enemy.viewEnemy(time)

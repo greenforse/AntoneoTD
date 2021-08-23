@@ -32,6 +32,18 @@ class Enemy():
         self.animation=[self.right1,self.right2,self.right3] # массив направлений с кадрами анимаций 
         self.swichNapravlenie = 0
         self.frozen=False
+
+    def beFrozen(self,tower):
+        if self in tower.targetAura:
+            self.frozen=True
+        else: self.frozen=False
+
+    def reFrozen(self,tower):
+        self.frozen=False
+        #if self in tower.targetAura:
+        #    pass
+        #else: self.frozen=False
+
     def go (self,road,deltaTime):
         if self.frozen:
             self.speed = self.startSpeed // 2
